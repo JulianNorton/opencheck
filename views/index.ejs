@@ -3,23 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon_io/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/css/tailwind.css">
     <title>DNS TXT Lookup</title>
 </head>
-<body>
-    <h1>Check TXT Record for a Domain</h1>
-    <form action="/lookup" method="post">
-        <label for="domain">Domain:</label>
-        <input type="text" id="domain" name="domain" required>
-        <button type="submit">Submit</button>
-    </form>
-    <% if (txtRecords) { %>
-        <h2>TXT Records for <%= domain %>:</h2>
-        <ul>
-            <% txtRecords.forEach(function(record) { %>
-                <li><%= record %></li>
-            <% }); %>
-        </ul>
-    <% } %>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-10">
+        <h1 class="text-3xl font-bold mb-6">Check TXT Record for a Domain!</h1>
+        <form action="/lookup" method="post" class="bg-white p-6 rounded-lg shadow-lg">
+            <div class="mb-4">
+                <label for="domain" class="block text-gray-700 text-sm mb-2">Domain:</label>
+                <input type="text" id="domain" name="domain" required class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:shadow-outline">
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
+        </form>
+        <% if (txtRecords) { %>
+            <h2 class="text-2xl font-semibold mt-8 mb-4">TXT Records for <%= domain %>:</h2>
+            <ul class="list-disc pl-5">
+                <% txtRecords.forEach(function(record) { %>
+                    <li class="mb-2 text-gray-800"><%= record %></li>
+                <% }); %>
+            </ul>
+        <% } %>
+    </div>
 </body>
 </html>
-
