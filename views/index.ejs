@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS TXT Lookup</title>
+</head>
+<body>
+    <h1>Check TXT Record for a Domain</h1>
+    <form action="/lookup" method="post">
+        <label for="domain">Domain:</label>
+        <input type="text" id="domain" name="domain" required>
+        <button type="submit">Submit</button>
+    </form>
+    <% if (txtRecords) { %>
+        <h2>TXT Records for <%= domain %>:</h2>
+        <ul>
+            <% txtRecords.forEach(function(record) { %>
+                <li><%= record %></li>
+            <% }); %>
+        </ul>
+    <% } %>
+</body>
+</html>
+
