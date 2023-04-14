@@ -16,16 +16,29 @@ app.get('/', (req, res) => {
 
 app.post('/lookup', (req, res) => {
     const domain = req.body.domain;
+    let message = null;
 
-    dns.resolveTxt(domain, (err, records) => {
+    dns.resolveTxt(domain, (err, txtRecords) => {
         if (err) {
-            res.render('index', { txtRecords: null, domain: null });
-            return;
+            txtRecords = null;
+            message = `Error fetching TXT records: ${err.message}`;
         }
 
-        res.render('index', { txtRecords: records.flat(), domain: domain });
+        dns.resolve4(domain, (err, aRecords) => {
+            if (err) {
+                aRecords = null;
+                if (message) {
+                    message += ` | Error fetching A records: ${err.message}`;
+                } else {
+                    message = `Error fetching A records: ${err.message}`;
+                }
+            }
+
+            res.render('index', { txtRecords, aRecords, domain, message });
+        });
     });
 });
+
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
