@@ -1,4 +1,4 @@
-# Opencheck
+# [Opencheck](https://www.opencheck.us)
 * I asked ChatGPT to make me stuff and it did
 
 
