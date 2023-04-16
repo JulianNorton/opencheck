@@ -1,0 +1,54 @@
+<% if (message) { %>
+    <div class="container mx-auto py-8 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-8"
+        role="alert">
+        <%= message %>
+    </div>
+    <% } %>
+        <% if (domain) { %>
+            <h2 class="text-2xl font-bold mb-4">
+                DNS Records for <%= domain %>
+            </h2>
+            <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <dl>
+                    <% for (const type of Object.keys(records)) { %>
+                        <div class="bg-white p-4 shadow mb-4">
+                            <dt class="text-lg font-semibold mb-2">
+                                <%= type %> Records
+                            </dt>
+                            <% if (records[type].length> 0) { %>
+                                <dd>
+                                    <pre class="bg-gray-200 p-2 rounded">
+                                        <%= records[type].join('\n') %>
+                                    </pre>
+                                </dd>
+                                <button onclick="toggleCollapsible(this)" class="text-blue-600">
+                                    [Click to show description]
+                                </button>
+                                <div class="hidden">
+                                    <p class="text-gray-800">
+                                        <%= helpers.getRecordDescription(type) %>
+                                    </p>
+                                </div>
+                                <% } else { %>
+                                    <dd class="text-gray-800">No <%= type %> records found.</dd>
+                                    <% } %>
+                        </div>
+                <% } %>
+                </dl>
+            </div>
+            <% } %>
+
+
+                <% if (spfIssues && spfIssues.length> 0) { %>
+                    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-8"
+                        role="alert">
+                        <strong class="font-bold">SPF Issues:</strong>
+                        <ul>
+                            <% spfIssues.forEach(function(issue) { %>
+                                <li class="list-disc ml-6">
+                                    <%= issue %>
+                                </li>
+                                <% }) %>
+                        </ul>
+                    </div>
+                    <% } %>

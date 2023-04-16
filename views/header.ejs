@@ -18,6 +18,22 @@
             }
         }
     </script>
-</head>
+    <script>
+        async function handleSubmit(event) {
+                event.preventDefault();
+                const form = event.target;
+                const data = new FormData(form);
+                const domain = data.get('domain');
+                const response = await fetch(`/lookup?domain=${domain}`); // Make sure it's using GET method here
+                const result = await response.text();
+                document.querySelector('.content').innerHTML = result;
+            }
 
-</html>
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('lookupForm').addEventListener('submit', handleSubmit);
+            });
+
+
+    </script>
+
+</head>

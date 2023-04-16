@@ -14,53 +14,52 @@ router.get('/', (req, res) => {
         records: {},
         domain: null,
         message: null,
-        spfIssues: []
-    });
-});
-
-
-
-router.get('/', (req, res) => {
-    res.render('index', {
-        records: {},
-        domain: null,
-        message: null,
         spfIssues: [],
         getRecordDescription: getRecordDescription
     });
 });
 
-    router.post('/lookup', async (req, res) => {
-        let domain = req.body.domain;
+router.get('/lookup', async (req, res) => {
+    let domain = req.query.domain;
 
-        if (domain && domain.startsWith('www.')) {
-            domain = domain.slice(4);
-        }
-
-        const recordTypes = ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'SRV', 'TXT'];
-
-        let records = {};
-        let message = null;
-
-        try {
-            records = await dns.resolveRecords(domain, recordTypes);
-        } catch (err) {
-            message = 'Error resolving DNS records.';
-        }
-
-        if (Object.keys(records).every(type => records[type].length === 0)) {
-            message = 'No DNS records found for the specified domain.';
-        }
-
-        console.log('TXT Records:', records.TXT);
-
-        const spfIssues = records.TXT ? spfAnalyzer.analyzeSpf(records.TXT) : [];
-
-        res.render("index", {
-            records,
-            domain,
-            message,
-            spfIssues: spfIssues
+    if (!domain) {
+        return res.render('content', {
+            records: {},
+            domain: null,
+            message: 'Please enter a domain name.',
+            spfIssues: []
         });
+    }
+
+    if (domain && domain.startsWith('www.')) {
+        domain = domain.slice(4);
+    }
+
+    const recordTypes = ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'SRV', 'TXT'];
+
+    let message = null;
+
+    let records;
+    try {
+        records = await dns.resolveRecords(domain, recordTypes);
+        console.log(records);
+    } catch (err) {
+        message = 'Error resolving DNS records.';
+    }
+
+    if (Object.keys(records).every(type => records[type].length === 0)) {
+        message = 'No DNS records found for the specified domain.';
+    }
+
+    console.log('TXT Records:', records.TXT);
+
+    const spfIssues = records.TXT ? spfAnalyzer.analyzeSpf(records.TXT) : [];
+
+    res.render('content', {
+        records,
+        domain,
+        message,
+        spfIssues: spfIssues
     });
+});
 module.exports = router;
