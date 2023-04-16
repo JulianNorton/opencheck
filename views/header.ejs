@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenCheck</title>
-    <link rel="stylesheet" href="/css/tailwind.css">
+    <link rel="stylesheet" href="/css/tailwind-min.css">
     <script>
         function toggleCollapsible(button) {
             const descriptionDiv = button.nextElementSibling;
@@ -24,7 +24,7 @@
                 const form = event.target;
                 const data = new FormData(form);
                 const domain = data.get('domain');
-                const response = await fetch(`/lookup?domain=${domain}`); // Make sure it's using GET method here
+                const response = await fetch(`/lookup?domain=${domain}`);
                 const result = await response.text();
                 document.querySelector('.content').innerHTML = result;
             }
