@@ -17,9 +17,15 @@
                             </dt>
                             <% if (records[type].length> 0) { %>
                                 <dd>
-                                    <pre class="bg-gray-200 p-2 rounded">
-                                        <%= records[type].join('\n') %>
-                                    </pre>
+                                    <p class="bg-gray-200 p-2 rounded">
+                                        <% if (type==='MX' ) { %>
+                                            <% records[type].forEach(record=> { %>
+                                                <%= `${record.exchange} ${record.priority}` %>
+                                                <% }); %>
+                                        <% } else { %>
+                                            <%= records[type].join('\n') %>
+                                            <% } %>
+                                </p>
                                 </dd>
                                 <button onclick="toggleCollapsible(this)" class="text-blue-600">
                                     [Click to show description]
