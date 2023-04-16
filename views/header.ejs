@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon_io/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <title>DNS TXT Lookup</title>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <script>
+        function toggleCollapsible(element) {
+            const content = element.nextElementSibling;
+            content.classList.toggle("hidden");
+        }
+
+        function getRecordDescription(type) {
+            const descriptions = {
+                A: "A records map a domain to an IPv4 address.",
+                AAAA: "AAAA records map a domain to an IPv6 address.",
+                CNAME: "CNAME records alias one domain to another.",
+                MX: "MX records specify the mail servers for a domain.",
+                NS: "NS records delegate a domain to a set of name servers.",
+                SOA: "SOA records contain information about a domain's DNS zone.",
+                SRV: "SRV records provide service discovery information for a domain.",
+                TXT: "TXT records store arbitrary text data associated with a domain."
+            };
+            return descriptions[type];
+        }
+    </script>

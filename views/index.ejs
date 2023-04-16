@@ -1,49 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
+<% include header %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/favicon_io/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="/css/tailwind.css">
-    <title>DNS TXT Lookup</title>
-</head>
+    <div class="container mx-auto py-8">
+        <h1 class="text-4xl font-bold mb-8">DNS TXT Lookup</h1>
 
-<body class="bg-gray-100 min-h-screen">
-    <div class="container mx-auto px-4 py-10">
-        <h1 class="text-3xl font-bold mb-6">Check DNS Records for a Domain!</h1>
-        <form action="/lookup" method="post" class="bg-white p-6 rounded-lg shadow-lg">
-            <div class="mb-4">
-                <label for="domain" class="block text-gray-700 text-sm mb-2">Domain:</label>
-                <input type="text" id="domain" name="domain" required
-                    class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:shadow-outline">
-            </div>
-            <button type="submit"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit
-            </button>
+        <form action="/lookup" method="post" class="mb-8">
+            <label for="domain" class="mr-2">Domain:</label>
+            <input type="text" id="domain" name="domain" required>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Lookup DNS Records</button>
         </form>
-        <% if (Object.keys(records).length > 0) { %>
-            <h2 class="text-2xl font-semibold mt-8 mb-4">DNS Records for <%= domain %>:</h2>
-            <% for (const type in records) { %>
-                <h3 class="text-xl font-semibold mb-2"><%= type %> Records:</h3>
-                <dl class="list-disc pl-5">
-                    <% if (Array.isArray(records[type])) { %>
-                        <% records[type].forEach(function(record) { %>
-                            <dt class="mb-2 text-gray-800"><%= type %>:</dt>
-                            <dd class="mb-2 text-gray-800"><%= JSON.stringify(record) %></dd>
-                        <% }); %>
-                    <% } else { %>
-                        <dt class="mb-2 text-gray-800"><%= type %>:</dt>
-                        <dd class="mb-2 text-gray-800"><%= JSON.stringify(records[type]) %></dd>
-                    <% } %>
-                </dl>
-            <% } %>
-        <% } else if (domain) { %>
-            <div class="mt-8">
-                <p class="text-xl text-red-600">No DNS records found for <%= domain %>.</p>
-            </div>
-        <% } %>
-    </div>
-</body>
 
-</html>
+        <% if (message) { %>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-8" role="alert">
+                <%= message %>
+            </div>
+            <% } %>
+
+                <% if (domain) { %>
+                    <h2 class="text-2xl font-bold mb-4">DNS Records for <%= domain %>
+                    </h2>
+
+                    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                        <dl>
+                            <% for (const type of Object.keys(records)) { %>
+                                <div class="mb-4">
+                                    <dt class="text-lg font-semibold mb-2">
+                                        <%= type %> Records
+                                    </dt>
+                                    <% if (records[type].length> 0) { %>
+                                        <dd>
+                                            <pre class="bg-gray-200 p-2 rounded"><%= records[type].join('\n') %></pre>
+                                        </dd>
+                                        <button onclick="toggleCollapsible(event.target)"
+                                            class="text-blue-500 hover:text-blue-800 focus:outline-none">[Click to show
+                                            description]</button>
+                                        <div class="hidden">
+                                            <p class="text-gray-800">
+                                                <%= getRecordDescription(type) %>
+                                            </p>
+                                        </div>
+                                        <% } else { %>
+                                            <dd class="text-gray-800">No <%= type %> records found.</dd>
+                                            <% } %>
+                                </div>
+                                <% } %>
+                        </dl>
+                    </div>
+                    <% } %>
+
+                        <% if (spfIssues.length> 0) { %>
+                            <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-8"
+                                role="alert">
+                                <strong class="font-bold">SPF Issues:</strong>
+                                <ul>
+                                    <% for (const issue of spfIssues) { %>
+                                        <li class="list-disc ml-6">
+                                            <%= issue %>
+                                        </li>
+                                        <% } %>
+                                </ul>
+                            </div>
+                            <% } %>
+    </div>
+
+    <% include footer %>
