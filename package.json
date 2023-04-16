@@ -16,6 +16,6 @@
     "yarn": "^1.22.19"
   },
   "scripts": {
-    "build:css": "tailwindcss build src/tailwind.css -o public/css/tailwind.css"
+    "build:css": "tailwindcss build src/styles.css -o public/css/tailwind.min.css"
   }
 }
