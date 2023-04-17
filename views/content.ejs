@@ -23,7 +23,7 @@
                                                 <%= `${record.exchange} ${record.priority}` %>
                                                 <% }); %>
                                         <% } else { %>
-                                            <%= records[type].join('\n') %>
+                                            <%= records[type].flat().join('\n') %>
                                             <% } %>
                                 </p>
                                 </dd>
