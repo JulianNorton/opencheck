@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const dns = require('./dns');
 const spfAnalyzer = require('./spf-analyzer');
-const getRecordDescription = require('./recordDescriptions');
+const getRecordDescription = require('./recordDescriptions').getRecordDescription;
 const path = require('path');
+
 
 router.use(express.urlencoded({ extended: false }));
 
@@ -59,7 +60,8 @@ router.get('/lookup', async (req, res) => {
         records,
         domain,
         message,
-        spfIssues: spfIssues
+        spfIssues: spfIssues,
+        getRecordDescription: getRecordDescription,
     });
 });
 module.exports = router;

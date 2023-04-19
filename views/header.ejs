@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,8 +14,7 @@
                 button.textContent = '[Click to show description]';
             }
         }
-    </script>
-    <script>
+
         async function handleSubmit(event) {
                 event.preventDefault();
                 const form = event.target;
@@ -26,14 +22,24 @@
                 const domain = data.get('domain');
                 const response = await fetch(`/lookup?domain=${domain}`);
                 const result = await response.text();
-                document.querySelector('.content').innerHTML = result;
+                document.querySelector('.results').innerHTML = result;
             }
 
-            document.addEventListener('DOMContentLoaded', () => {
-                document.getElementById('lookupForm').addEventListener('submit', handleSubmit);
-            });
 
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('lookupForm').addEventListener('submit', handleSubmit);
+        });
 
+        function showAllDescriptions() {
+            const descriptions = document.getElementsByClassName('record-description');
+            const button = document.getElementById('show-hide-button');
+            const isHidden = button.textContent === 'Show descriptions';
+
+            for (const description of descriptions) {
+                description.style.display = isHidden ? 'block' : 'none';
+            }
+
+            button.textContent = isHidden ? 'Hide descriptions' : 'Show descriptions';
+        }
     </script>
-
 </head>
